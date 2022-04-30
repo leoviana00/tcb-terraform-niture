@@ -61,6 +61,18 @@ export TF_VAR_tenancy_ocid=${tenancy_ocid}
 export TF_VAR_region=${region}
 ```
 
+- Essa variábeis serão criadas dentro do gitlab
+
+<p align="center">
+  <img alt="gitlab" src="data/gitlabci/gitlabci-07.png">
+</p>
+
+- Serão utilizadas dentro do arquivo `.gitlab-ci.yml`
+
+<p align="center">
+  <img alt="gitlab" src="data/gitlabci/gitlabci-08.png">
+</p>
+
 - Criação dos arquivos `.tf` para criar os seguintes recursos:
     - vcn
     - subnet
