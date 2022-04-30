@@ -1,0 +1,130 @@
+#----------------------------------------------
+# Start Pipeline GilabCI
+#----------------------------------------------
+
+image:
+  name: registry.gitlab.com/gitlab-org/terraform-images/stable:latest
+
+variables:
+  TF_ROOT: ${CI_PROJECT_DIR}/infraestrutura
+  TF_SCRIPTS: ${CI_PROJECT_DIR}/scripts
+  TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${CI_PROJECT_NAME}-${CI_COMMIT_BRANCH}
+  TF_STAGE: ""
+cache:
+  key: ${CI_PROJECT_NAME}-${CI_COMMIT_BRANCH}
+  paths:
+    - ${TF_ROOT}/.terraform
+
+before_script:
+  - export TF_VAR_private_key=${private_key}
+  - export TF_VAR_ssh_public_key=${ssh_public_key}
+  - export TF_VAR_fingerprint=${fingerprint}
+  - export TF_VAR_user_ocid=${user_ocid}
+  - export TF_VAR_compartment_ocid=${compartment_ocid}
+  - export TF_VAR_tenancy_ocid=${tenancy_ocid}
+  - export TF_VAR_region=${region}
+  - cd ${TF_ROOT}
+  - terraform --version
+
+stages:
+  - prepare
+  - validate
+  - build
+  - deploy
+  - notificacao
+  - cleanup
+#----------------------------------------------
+# terraform init
+#----------------------------------------------
+ 
+init:
+  stage: prepare
+  script:
+    - gitlab-terraform init
+
+#----------------------------------------------
+# terraform validate
+#----------------------------------------------
+
+validate:
+  stage: validate
+  needs: [init]
+  script:
+    - gitlab-terraform validate
+    - gitlab-terraform fmt -check=true
+  dependencies:
+    - init
+
+#----------------------------------------------
+# terraform plan
+#----------------------------------------------
+
+plan:
+  stage: build
+  needs: [validate]
+  script:
+    - gitlab-terraform plan
+    - gitlab-terraform plan-json
+  dependencies:
+    - validate
+  artifacts:
+    name: plan
+    paths:
+      - ${TF_ROOT}/plan.cache
+    reports:
+      terraform: ${TF_ROOT}/plan.json
+
+#----------------------------------------------
+# terraform apply
+#----------------------------------------------
+
+apply:
+  stage: deploy
+  needs: [plan]
+  script:
+    - gitlab-terraform apply
+  dependencies:
+    - plan
+  when: manual
+  only:
+    variables:
+      - $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+#----------------------------------------------
+# Notificações Stages Sucesso ou Falha
+#----------------------------------------------
+
+notificacao-sucesso:
+  stage: notificacao
+  needs: [apply]
+  when: on_success
+  script:
+    - cd ${TF_SCRIPTS}
+    - sh notificacaoStageSucesso.sh 
+  dependencies:
+    - apply
+
+notificacao-falha:
+  stage: notificacao
+  when: on_failure
+  script:
+    - cd ${TF_SCRIPTS}
+    - sh notificacaoStageFalha.sh
+
+#----------------------------------------------
+# terraform destroy
+#----------------------------------------------
+
+destroy: 
+  stage: cleanup
+  needs: [apply]
+  script:
+    - gitlab-terraform destroy
+    - cd ${TF_SCRIPTS}
+    - sh notificacaoDestroySucesso.sh
+  dependencies:
+    - apply
+  when: manual
+  only:
+    variables:
+      - $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
