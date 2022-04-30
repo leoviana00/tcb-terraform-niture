@@ -96,13 +96,13 @@ apply:
 
 notificacao-sucesso:
   stage: notificacao
-  needs: [apply]
+  needs: [plan]
   when: on_success
   script:
     - cd ${TF_SCRIPTS}
     - sh notificacaoStageSucesso.sh 
   dependencies:
-    - apply
+    - plan
 
 notificacao-falha:
   stage: notificacao
