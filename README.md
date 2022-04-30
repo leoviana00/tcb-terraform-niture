@@ -20,7 +20,7 @@
 
 ## 🌱 Projeto
 
-No Projeto Cloud Implementação Compute, você fará o deploy do website niture usando umscript. Mas ainda assim, você precisará logar via ssh no webserver e fazer a sua execuçãomanualmente. Com isso, no Desafio Sheep HA, pense como consegue plugar esse scriptdentro da execução para queconsiga fazer a automação de ponta a ponta.Pois,  com  todos os  casos de  lockdown, pandemia e  tudo  o  que  o  mundo está  vivendo,qualquer negócio que tenha o seu site ou a sua página indisponibilizada na internet estáperdendo dinheiro.Além disso, pense como implementar alta disponibilidade nessa camada, para garantir que sehouver um  problema com  o  webserver, você  tenha algum mecanismo  para  que  o  outroassuma e não tenha indisponibilidade no site da loja de móveis de luxo que está online a todo vapor.
+No Projeto Cloud Implementação Compute, você fará o deploy do website niture usando um script. Mas ainda assim, você precisará logar via ssh no webserver e fazer a sua execução manualmente. Com isso, no Desafio Sheep HA, pense como consegue plugar esse script dentro da execução para que consiga fazer a automação de ponta a ponta. Pois,  com  todos os  casos de  lockdown, pandemia e  tudo  o  que  o  mundo está  vivendo,qualquer negócio que tenha o seu site ou a sua página indisponibilizada na internet estáperdendo dinheiro. Além disso, pense como implementar alta disponibilidade nessa camada, para garantir que sehouver um  problema com  o  webserver, você  tenha algum mecanismo  para  que  o  outro assuma e não tenha indisponibilidade no site da loja de móveis de luxo que está online a todo vapor.
 
 <p align="center">
   <img alt="DevOps" src="data/terraform/pista.png">
