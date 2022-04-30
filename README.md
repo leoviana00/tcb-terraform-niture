@@ -17,6 +17,9 @@
   <img alt="DevOps" src="data/terraform/logo.png">
 </p>
 
+x-special/nautilus-clipboard
+copy
+file:///media/leoviana/541e50a4-8d84-4587-a391-839c40bfc3c8/leoviana/tcb-terraform-niture/data/preview/cicd-terraform.webm 
 
 ## 🌱 Projeto
 
