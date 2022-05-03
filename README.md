@@ -59,7 +59,6 @@ export TF_VAR_compartment_ocid=${compartment_ocid}
 export TF_VAR_tenancy_ocid=${tenancy_ocid}
 export TF_VAR_region=${region}
 ```
-
 - Essa variábeis serão criadas dentro do gitlab
 
 <p align="center">
